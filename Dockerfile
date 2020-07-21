@@ -1,4 +1,4 @@
-FROM php:7.4-fpm
+FROM php:7.4-fpm as base_image
 
 WORKDIR /var/www/html/laravel
 
@@ -33,7 +33,21 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN echo "set meta-flag on" >> /etc/.inputrc \
     echo "set convert-meta off" >> /etc/.inputrc
 
-COPY "memory-limit.ini" "/usr/local/etc/php/conf.d/memory-limit.ini"
+# Assets
+FROM node:latest as assets
+
+WORKDIR /var/www/html/laravel
+
+COPY ./package.json     /var/www/html/laravel/package.json
+COPY ./webpack.mix.js   /var/www/html/laravel/webpack.mix.js
+COPY ./resources        /var/www/html/laravel/resources
+
+RUN yarn && yarn dev
+
+FROM base_image as dev
+
+COPY  ./.container/php/memory-limit.ini /usr/local/etc/php/conf.d/memory-limit.ini
+COPY --chown=www-data --from=assets /var/www/html/laravel /var/www/html/laravel
 
 RUN usermod -u 1000 www-data
 RUN chown -R www-data:www-data /var/www/html/laravel

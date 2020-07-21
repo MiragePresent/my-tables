@@ -14,7 +14,7 @@ services:
       - main
 
   backend:
-    build: .container/php
+    build: ./
     volumes:
       - ./:/var/www/html/laravel:cached
     networks:
