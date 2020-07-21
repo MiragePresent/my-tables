@@ -23,6 +23,8 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    public const MORPH_NAME = 'user';
+
     public const ROLE_ADMIN = 'admin';
     public const ROLE_CUSTOMER = 'customer';
     public const ROLE_CODE_ADMIN = 1;
