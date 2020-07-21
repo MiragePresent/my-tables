@@ -6,8 +6,8 @@ services:
     ports:
       - "9090:80"
     volumes:
-      - ./.container/nginx/default.conf:/etc/nginx/conf.d/default.conf:cached
-      - ./:/var/www/html/laravel:cached
+      - ./.container/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./:/var/www/html/laravel
     depends_on:
       - backend
     networks:
@@ -16,7 +16,7 @@ services:
   backend:
     build: ./
     volumes:
-      - ./:/var/www/html/laravel:cached
+      - ./:/var/www/html/laravel
     networks:
       - main
 
