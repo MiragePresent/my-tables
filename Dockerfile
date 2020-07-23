@@ -44,6 +44,7 @@ COPY ./resources        /var/www/html/laravel/resources
 
 RUN yarn && yarn dev
 
+# Main image
 FROM base_image as dev
 
 COPY  ./.container/php/memory-limit.ini /usr/local/etc/php/conf.d/memory-limit.ini
