@@ -17,7 +17,8 @@ use InvalidArgumentException;
  *
  * @property-read Transaction[] $transactions
  *
- * @method static customers() Select only customers
+ * @method static Builder customers() Select only customers
+ * @method static Builder latest()
  */
 class User extends Authenticatable
 {
@@ -65,6 +66,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    // Relations
+
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
@@ -84,9 +87,9 @@ class User extends Authenticatable
         return $this->getOriginal('role');
     }
 
-    public function getRoleAttribute()
+    public function getRoleAttribute($value)
     {
-        return self::AVAILABLE_ROLES[$this->roleCode];
+        return self::AVAILABLE_ROLES[$value];
     }
 
     // Mutators

@@ -3,6 +3,7 @@
 namespace App;
 
 use Carbon\Traits\Timestamp;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
 
@@ -15,6 +16,8 @@ use InvalidArgumentException;
  * @property int $typeCode
  *
  * @property-read User $user
+ *
+ * @method static Builder latest()
  */
 class Transaction extends Model
 {
@@ -38,6 +41,13 @@ class Transaction extends Model
         'type',
     ];
 
+//    public static function booted()
+//    {
+//        static::addGlobalScope(new LatestScope());
+//    }
+
+    // Relations
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -49,9 +59,9 @@ class Transaction extends Model
         return $this->getOriginal('amount');
     }
 
-    public function getAmountAttribute(): float
+    public function getAmountAttribute($value): float
     {
-        return $this->originalAmount / 100;
+        return $value / 100;
     }
 
     public function getTypeCodeAttribute(): int
@@ -59,9 +69,9 @@ class Transaction extends Model
         return $this->getOriginal('type');
     }
 
-    public function getTypeAttribute(): string
+    public function getTypeAttribute($value): string
     {
-        return self::AVAILABLE_TYPES[$this->typeCode] ?? 'invalid';
+        return self::AVAILABLE_TYPES[$value] ?? 'invalid';
     }
 
     // Mutators

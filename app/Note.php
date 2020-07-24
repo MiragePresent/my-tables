@@ -4,6 +4,7 @@ namespace App;
 
 use Carbon\Traits\Timestamp;
 use Illuminate\Database\Eloquent\Model;
+use PhpParser\Builder;
 
 /**
  * @property int $id
@@ -13,6 +14,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $description
  *
  * @property-read User|Transaction $entity
+ *
+ * @method static Builder latest()
  */
 class Note extends Model
 {
